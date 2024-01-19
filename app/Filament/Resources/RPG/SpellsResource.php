@@ -17,13 +17,97 @@ class SpellsResource extends Resource
 {
     protected static ?string $model = Spells::class;
 
+    protected static ?string $navigationGroup = 'RPG';
+
+    protected static ?string $label = 'Magias';
+
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
+    protected static ?string $activeNavigationIcon = 'heroicon-s-rectangle-stack';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                //
+                Forms\Components\Section::make('Dados da magia')
+                    ->icon('heroicon-s-adjustments-horizontal')
+                    ->iconSize('md')
+                    ->iconColor('success')
+                    ->columns(6)
+                    ->schema([
+                        Forms\Components\TextInput::make('name')
+                            ->label('Nome')
+                            ->columnSpan(2)
+                            ->required()
+                            ->minLength(1)
+                            ->maxLength(100),
+                        Forms\Components\TextInput::make('level')
+                            ->placeholder('Classe (Nivel), Classe (Nivel), ...')
+                            ->label('Nivel')
+                            ->columnSpan(2)
+                            ->required(),
+                        Forms\Components\Select::make('spell_resistance')
+                            ->label('Resistência a Magia')
+                            ->columnSpan(2)
+                            ->options([
+                                'Não',
+                                'Sim',
+                                'Sim (Objeto)',
+                                'Sim (Inofensiva)',
+                            ]),
+                        Forms\Components\Select::make('school')
+                            ->label('Escola')
+                            ->columnSpan(2)
+                            ->options([
+                                'Evocation' => 'Evocação',
+                                'Enchantment' => 'Encantamento',
+                                'Conjuration' => 'Conjuração',
+                                'Transmutation' => 'Transmutação',
+                                'Necromancy' => 'Necromancia',
+                                'Mind - Affecting' => 'Mente',
+                                'Divination' => 'Advinhação',
+                                'Illusion' => 'Ilusão',
+                                'Universal' => 'Universal',
+                            ])
+                            ->required(),
+                        Forms\Components\TextInput::make('saving_throw')
+                            ->label('Teste de Resistência')
+                            ->columnSpan(2)
+                            ->minLength(1)
+                            ->maxLength(100),
+                        Forms\Components\TextInput::make('casting_time')
+                            ->label('Tempo de Execução')
+                            ->columnSpan(2)
+                            ->required()
+                            ->minLength(1)
+                            ->maxLength(100),
+                        Forms\Components\TextInput::make('range')
+                            ->label('Alcance')
+                            ->columnSpan(2),
+                        Forms\Components\TextInput::make('duration')
+                            ->label('Duração')
+                            ->columnSpan(2),
+                        Forms\Components\TextInput::make('target')
+                            ->label('Tempo de Execução')
+                            ->columnSpan('full'),
+                        Forms\Components\Select::make('components')
+                            ->label('Componentes')
+                            ->columnSpan(2)
+                            ->options([
+                                'V',
+                                'G',
+                                'M',
+                                'F',
+                                'FD',
+                                'XP',
+                                'Ritual'
+                            ])
+                            ->multiple()
+                            ->required(),
+                        Forms\Components\RichEditor::make('effect')
+                            ->columnSpan('full')
+                            ->label('Efeito')
+                    ]),
             ]);
     }
 
@@ -32,20 +116,31 @@ class SpellsResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                    ->label('Nome')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('school'),
-                Tables\Columns\TextColumn::make('components'),
-                Tables\Columns\TextColumn::make('casting_time'),
-                Tables\Columns\TextColumn::make('range'),
-                Tables\Columns\TextColumn::make('target'),
-                Tables\Columns\TextColumn::make('effect'),
-                Tables\Columns\TextColumn::make('saving_throw'),
+                Tables\Columns\TextColumn::make('level')
+                    ->label('Nivel'),
+                Tables\Columns\TextColumn::make('components')
+                    ->label('Componentes'),
+                Tables\Columns\TextColumn::make('casting_time')
+                    ->label('Tempo de Execução'),
+                Tables\Columns\TextColumn::make('range')
+                    ->label('Alcance'),
+                Tables\Columns\TextColumn::make('target')
+                    ->label('Alvos'),
+                Tables\Columns\TextColumn::make('effect')
+                    ->label('Efeito'),
+                Tables\Columns\TextColumn::make('saving_throw')
+                    ->label('Teste de Resistência'),
             ])
             ->filters([
                 //
             ])
             ->actions([
-//                Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make()
+                    ->label('Detalhes'),
+                Tables\Actions\EditAction::make()
+                    ->label('Editar'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
