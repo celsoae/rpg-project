@@ -119,19 +119,26 @@ class SpellsResource extends Resource
                     ->label('Nome')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('level')
-                    ->label('Nivel'),
+                    ->label('Nivel')
+                    ->toggleable(),
                 Tables\Columns\TextColumn::make('components')
-                    ->label('Componentes'),
+                    ->label('Componentes')
+                    ->toggleable(),
                 Tables\Columns\TextColumn::make('casting_time')
-                    ->label('Tempo de Execução'),
+                    ->label('Tempo de Execução')
+                    ->toggleable(),
                 Tables\Columns\TextColumn::make('range')
-                    ->label('Alcance'),
+                    ->label('Alcance')
+                    ->toggleable(),
                 Tables\Columns\TextColumn::make('target')
-                    ->label('Alvos'),
+                    ->label('Alvos')
+                    ->toggleable(),
                 Tables\Columns\TextColumn::make('effect')
-                    ->label('Efeito'),
+                    ->label('Efeito')
+                    ->toggleable(),
                 Tables\Columns\TextColumn::make('saving_throw')
-                    ->label('Teste de Resistência'),
+                    ->label('Teste de Resistência')
+                    ->toggleable(),
             ])
             ->filters([
                 //
